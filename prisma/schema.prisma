@@ -18,6 +18,7 @@ model Usuario {
   cau       String?     @db.VarChar(10)
   descricao String?     @db.Text
   tipo      TipoUsuario
+  projetos  Projeto[]
 }
 
 model Projeto {
@@ -25,6 +26,8 @@ model Projeto {
   nome      String
   descricao String? @db.Text
   arquivo   String?
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
 }
 
 enum Estado {
