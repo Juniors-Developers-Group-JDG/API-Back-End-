@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id        Int         @id @default(autoincrement())
+  nome      String
+  email     String      @unique
+  senha     String
+  cidade    String?
+  estado    Estado?
+  telefone  String?
+  cau       String?     @db.VarChar(10)
+  descricao String?     @db.Text
+  tipo      TipoUsuario
+}
+
+model Projeto {
+  id        Int     @id @default(autoincrement())
+  nome      String
+  descricao String? @db.Text
+  arquivo   String?
+}
+
+enum Estado {
+  AC
+  AL
+  AP
+  AM
+  BA
+  CE
+  DF
+  ES
+  GO
+  MA
+  MT
+  MS
+  MG
+  PA
+  PB
+  PR
+  PE
+  PI
+  RJ
+  RN
+  RS
+  RO
+  RR
+  SC
+  SP
+  SE
+  TO
+}
+
+enum TipoUsuario {
+  ADMIN
+  USER
+}
