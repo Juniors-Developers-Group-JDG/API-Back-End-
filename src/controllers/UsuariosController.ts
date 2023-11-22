@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import { config } from 'dotenv';
 import emailSender from '../libs/emailSender';
 import { PrismaClient } from '@prisma/client';
@@ -36,10 +35,10 @@ class UsuariosController {
   }
 
   async resetPassword(req: Request, res: Response) {
-    const { enteredId, token } = req.params;
+    const { id, token } = req.params;
     const userExists = await prisma.usuario.findUnique({
       where: {
-        id: Number(enteredId),
+        id: Number(id),
       },
     });
     if (!userExists) return res.status(404).json({ msg: 'Invalid ID.' });
@@ -55,12 +54,12 @@ class UsuariosController {
   }
 
   async changePassword(req: Request, res: Response) {
-    const { enteredId, token } = req.params;
+    const { id, token } = req.params;
     const { password, password2 } = req.body;
 
     const userExists = await prisma.usuario.findUnique({
       where: {
-        id: Number(enteredId),
+        id: Number(id),
       },
     });
     if (!userExists) return res.status(404).json({ msg: 'Invalid ID.' })
