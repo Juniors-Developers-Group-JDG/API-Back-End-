@@ -20,6 +20,13 @@ export const cadastro = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    if (!nome || !email || !senha || !tipo) {
+      res.status(400).json({
+        erro: "Verifique os campos. Nome, email, senha e tipo são obrigatórios",
+      });
+      return;
+    }
+
     const uniqueUser = await prismadb.usuario.findUnique({
       where: { email },
     });
