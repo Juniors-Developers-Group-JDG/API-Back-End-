@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import { config } from 'dotenv';
 import emailSender from '../libs/emailSender';
 import { PrismaClient } from '@prisma/client';
@@ -23,7 +24,7 @@ class UsuariosController {
         email: userExists.email,
       };
       const token = jwt.sign(payload, secret, { expiresIn: '2h' });
-      const link = `http://localhost:3000/resetpassword/${userExists.id}/${token}`;
+      const link = `http://localhost:3000/api/resetpassword/${userExists.id}/${token}`;
       const send = await emailSender(email, link);
       if (send) {
         res.status(200).json({ msg: 'Message sent successfully.' });
@@ -68,16 +69,17 @@ class UsuariosController {
     const secret = jwtSecret + userExists.senha;
     try {
       jwt.verify(token, secret);
+      const hashedPassword = await bcrypt.hash(password, 10)
       const result = await prisma.usuario.update({
         where: {
           id: userExists.id,
         },
         data: {
-          senha: password,
+          senha: hashedPassword,
         },
       });
       console.log(result);
-      res.redirect('http://localhost:3000/login');
+      res.redirect('http://localhost:3000/api/login');
     } catch (error: any) {
       res.status(401).json({ msg: error.message });
     }
