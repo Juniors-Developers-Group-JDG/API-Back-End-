@@ -3,24 +3,49 @@
 // preencher "nome", "descricao" e "arquivo", "id" preenchido automaticamente com o id do usuário logado
 
 import { PrismaClient } from '@prisma/client';
+import jwt from "jsonwebtoken";
+import { Request, Response } from "express";
+import prismadb from "../libs/prismadb";
 
 const prisma = new PrismaClient();
 
-export const cadastrarProjeto = async (req: Request, res: Response): Promise<void> => {
+export const createProject = async (req: Request, res: Response): Promise<void> => {
   const { nome, descricao, arquivo } = req.body;
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    res.status(401).json({ erro: "Token não fornecido." });
+    return;
+  }
 
-  // Verificar se o usuário está autenticado
-  const userId = req.user.id; // Supondo que você tenha um middleware que adiciona o usuário ao request (req.user)
+  let userIdByToken: { userId: number } | undefined;
+
+  jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+    if (err) {
+      res.status(403).json({ erro: "Token inválido." });
+      return;
+    }
+    userIdByToken = decoded as { userId: number };
+  });
+
+  const user = await prismadb.usuario.findUnique({
+    where: {
+      id: userIdByToken?.userId,
+    },
+  });
+
+  if (!user) {
+    res.status(400).json({ erro: "Usuário não encontrado." });
+    return;
+  }
 
   try {
-    // Criar o projeto associado ao usuário logado
     const novoProjeto = await prisma.projeto.create({
       data: {
         nome,
         descricao,
         arquivo,
         usuario: {
-          connect: { id: userId },
+          connect: { id: user.id },
         },
       },
     });
