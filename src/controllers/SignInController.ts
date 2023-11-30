@@ -3,7 +3,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import prismadb from "../libs/prismadb";
 
-export const cadastro = async (req: Request, res: Response): Promise<void> => {
+export const signIn = async (req: Request, res: Response): Promise<void> => {
   const { nome, email, senha, cidade, estado, telefone, cau, descricao, tipo } =
     req.body;
 

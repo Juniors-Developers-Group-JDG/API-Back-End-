@@ -1,18 +1,17 @@
-import bodyParser from 'body-parser';
-import express from 'express';
-import routes from './routes/Routes';
-import { UserController } from './routes/UserController';
+import bodyParser from "body-parser";
+import express from "express";
+import routes from "./routes/Routes";
 
 const app = express();
 
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.set("view engine", "ejs");
+app.use(express.static("public"));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.json());
 
-app.use('/api', routes);
+app.use("/api", routes);
 
 const PORT = process.env.PORT || 3000;
 
