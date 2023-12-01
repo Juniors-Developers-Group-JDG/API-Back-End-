@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import express from "express";
 import routes from "./routes/Routes";
+import projectsRoutes from "./routes/projectsRoutes";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 app.use("/api", routes);
+app.use("/api/projetos", projectsRoutes);
 
 const PORT = process.env.PORT || 3000;
 
