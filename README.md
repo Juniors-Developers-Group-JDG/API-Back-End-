@@ -28,7 +28,7 @@ Antes de começar, certifique-se de ter o [Node.js](https://nodejs.org/) instala
 2. Acesse o diretório do projeto:
 
    ```bash
-   cd API-Back-End
+   cd API-Back-End-
    ```
 
 3. Instale as dependências:
