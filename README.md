@@ -13,6 +13,7 @@ O projeto foi construído utilizando as seguintes tecnologias:
 - **Swagger**: Framework para documentação de APIs.
 - **Express**: Framework web para Node.js.
 - **MySQL**: Sistema de gerenciamento de banco de dados relacional.
+- **Prisma**:  Tipo de ORM (Object-Relational Mapping) 
 
 ## Como Usar
 
